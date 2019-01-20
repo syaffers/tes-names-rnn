@@ -65,7 +65,7 @@ for epoch in range(num_epochs):
             targets = t_name[:, char_i+1:char_i+2].argmax(dim=2).squeeze()
             loss += criterion(t_output, targets)
 
-        losses.append(loss.item() / t_race.size(0))
+        losses.append(loss.item())
         loss.backward()
         optimizer.step()
 
