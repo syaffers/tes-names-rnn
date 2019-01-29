@@ -12,9 +12,11 @@ from generator import generate
 data_root = '/home/syafiq/Data/tes-names/'
 charset = string.ascii_letters + '\'- '
 max_length = 30
-learning_rate = 0.0003
+hidden_size = 128
 batch_size = 64
 num_epochs = 100
+learning_rate = 0.0003
+print_interval = 100
 
 # Prepare dataset/loader.
 dataset = TESNamesDataset(data_root, charset, max_length)
@@ -29,7 +31,6 @@ input_size = (
     len(dataset.gender_codec.classes_) +
     len(dataset.char_codec.classes_)
 )
-hidden_size = 128
 output_size = len(dataset.char_codec.classes_)
 
 model = TESLSTM(input_size, hidden_size, output_size)
@@ -39,7 +40,7 @@ model = model.to(device)
 criterion = nn.NLLLoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
-losses = deque([], maxlen=100)
+losses = deque([], maxlen=print_interval)
 
 # Training.
 for epoch in range(num_epochs):
@@ -69,7 +70,7 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-        if batch_i % 100 == 0:
+        if batch_i % print_interval == 0:
             print(generate('Argonian', 'Male', 'H', dataset, model, device))
             print('[%03d] %05d/%05d Loss: %.4f' % (
                 epoch + 1,
