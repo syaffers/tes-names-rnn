@@ -1,7 +1,7 @@
 import os
-import torch
 from sklearn.preprocessing import LabelEncoder
 from torch.utils.data import Dataset
+import torch
 
 class TESNamesDataset(Dataset):
     ''' The Elder Scrolls Names dataset class.
